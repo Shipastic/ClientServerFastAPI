@@ -25,7 +25,6 @@ class UserService:
     def get_user_tokens(self, username:str, password:str):
         mapping = MappingDTO()
         jwt_token = JWTTokenService()
-        user_dto = UserDTO()
         user_dto =  mapping.set_user_dto_fields_from_db(username)     
         if self.is_user_password_verification(password, user_dto.password):    
             self.set_user_pair_tokens(user_dto)
@@ -49,8 +48,10 @@ class UserService:
         if user_dto.role != "admin":
             return {"error": "Access denied"}
 
-    def set_user_create_fields(self,user: UserCreate, pwd_service: PasswordService, user_repository: UserRepoImplementation,user_dto: UserDTO):
+    def set_user_create_fields(self,user: UserCreate, user_dto: UserDTO):
         try:
+            pwd_service = PasswordService()
+            user_repository = UserRepoImplementation()
             self.is_valid_role = self.check_user_role(user_dto)
             self.password_hash = pwd_service.generate_hash(user.password)
             self.isCreated = user_repository.create_user(user.username, user.role, self.password_hash)

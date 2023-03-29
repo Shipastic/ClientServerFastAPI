@@ -1,5 +1,6 @@
 from ..db.PostgresDbConnection import *
 from ..Repository.UserRepository import UserRepository
+
 class UserRepoImplementation(UserRepository):
     
     id : int

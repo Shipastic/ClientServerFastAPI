@@ -8,7 +8,6 @@ from domain_service.JWTTokenService import JWTTokenService
 from domain_service.UserService import UserService
 from domain.Constants import *
 from domain_service.PasswordService import *
-from core.RepositoryImplement.UserRepoImplement import UserRepoImplementation
 
 app = FastAPI()
 
@@ -35,10 +34,8 @@ def get_all_users(token:str) -> Result:
 @app.post("/create_user", response_model=None) 
 def create_user(user: UserCreate, user_dto: UserDTO = Depends(jwtToken.verify_token))-> Result:
     try:
-        pwd_service = PasswordService()
-        user_repository = UserRepoImplementation()
         user_service = UserService()
-        create_user =  user_service.set_user_create_fields(user,pwd_service,user_repository, user_dto)
+        create_user =  user_service.set_user_create_fields(user,user_dto)
         if create_user.isCreated:
             return Success({"message": "User created successfully", "new user": {user.username}})
         else:
