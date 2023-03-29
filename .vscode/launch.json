@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Python: текущий файл",
-           // "name": "Python: FastAPI",
+            //"name": "Python: FastAPI",
             "type": "python",
             "request": "launch",
             "module": "uvicorn",

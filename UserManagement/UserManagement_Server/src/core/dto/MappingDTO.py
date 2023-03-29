@@ -1,17 +1,37 @@
 from .UserDTO import *
 from .TokenDTO import TokenDTO
+from core.RepositoryImplement.UserRepoImplement import UserRepoImplementation
+
+user_repo = UserRepoImplementation()
 
 class MappingDTO:
     
     #Method for setting user fields from data
-    def set_user_dto_fields(self,user_implement: tuple) -> UserDTO:
+    def set_user_dto_fields_from_db(self,username: str) -> UserDTO:
         try:
+            auth_user = user_repo.get_user(username)
             user_dto = UserDTO()
-            user_dto.id = user_implement[0]
-            user_dto.username = user_implement[1]
-            user_dto.password = user_implement[2]
-            user_dto.role = user_implement[3]
+            user_dto.id = auth_user[0]
+            user_dto.username = auth_user[1]
+            user_dto.password = auth_user[2]
+            user_dto.role = auth_user[3]
             return user_dto
+        except :
+            return None
+
+    #Method for get user list from data base
+    def get_users_dto_from_db(self):
+        try:
+            auth_users = user_repo.get_users()
+            users_dto = list()          
+            for user in auth_users:
+                user_dto = UserDTO()
+                user_dto.id = user[0]
+                user_dto.username = user[1]
+                user_dto.password = user[2]
+                user_dto.role = user[3]
+                users_dto.append(user_dto)
+            return users_dto
         except :
             return None
 
@@ -27,3 +47,11 @@ class MappingDTO:
             return token_dto
         except:
             return None
+
+    #Method for setting fields user_dto from token
+    def set_user_dto_fields_from_token(self, token_payload_dict:dict):
+        user_dto= UserDTO()
+        user_dto.username = token_payload_dict.get("sub")
+        user_dto.role = token_payload_dict.get("role")
+        user_dto.expiration_token = token_payload_dict.get("exp")
+        return user_dto

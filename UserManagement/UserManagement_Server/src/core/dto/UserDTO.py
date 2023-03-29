@@ -6,3 +6,5 @@ class UserDTO:
     password:str
     role:str
     expiration_token: int
+    token_access: str
+    token_refresh: str

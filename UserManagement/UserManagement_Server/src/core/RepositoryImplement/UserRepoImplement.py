@@ -28,8 +28,6 @@ class UserRepoImplementation(UserRepository):
             print(f"Failed to get user: {e}")
             return None
 
-
-
     #Method for get all users in table users
     def get_users(self):
         query = f"SELECT id, username, password, role FROM users"
@@ -42,9 +40,7 @@ class UserRepoImplementation(UserRepository):
             self.dbConn.disconnect() 
             print(f"Failed to get users: {e}")
             return None
-
-
-    
+  
     #Method for create user
     def create_user(self, username, role, password):
         try:

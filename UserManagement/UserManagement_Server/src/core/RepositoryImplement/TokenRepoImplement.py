@@ -1,4 +1,5 @@
 from ..db.PostgresDbConnection import *
+from ..dto.UserDTO import UserDTO
 from ..Repository.TokenRepository import TokenRepository
 from domain.Constants import REFRESH_TOKEN_EXPIRE_MINUTES, ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import datetime, timedelta
@@ -22,8 +23,8 @@ class TokenRepoImplementation(TokenRepository):
                             )
 
     #Method for insert refresh token in table refresh_tokens                        
-    def insert_refresh_token(self, id:int, refresh_token):
-        query = f"INSERT INTO refresh_tokens (user_id, token, expires_at) VALUES ('{id}', '{refresh_token}', '{self.time_death_token_refresh}')"
+    def insert_refresh_token(self, user_dto:UserDTO):
+        query = f"INSERT INTO refresh_tokens (user_id, token, expires_at) VALUES ('{user_dto.id}', '{user_dto.token_refresh}', '{self.time_death_token_refresh}')"
         try:
             self.dbConn.connect()
             self.dbConn.execute_query(query)  
@@ -35,8 +36,8 @@ class TokenRepoImplementation(TokenRepository):
             return False
 
     #Method for update refresh_token        
-    def update_refresh_token(self, user_id, refresh_token):
-        query = f"UPDATE refresh_tokens SET token = '{refresh_token}', expires_at = '{self.time_death_token_refresh}'  WHERE user_id ='{user_id}'"
+    def update_refresh_token(self, user_dto:UserDTO):
+        query = f"UPDATE refresh_tokens SET token = '{user_dto.token_refresh}', expires_at = '{self.time_death_token_refresh}'  WHERE user_id ='{user_dto.id}'"
         try:
             self.dbConn.connect()
             self.dbConn.execute_query(query)  

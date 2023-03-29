@@ -9,6 +9,4 @@ class UserBase(BaseModel):
 
 #class for create user
 class UserCreate(UserBase):
-    username: str
-    password: str
-    role: str
+  pass
