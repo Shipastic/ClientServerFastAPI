@@ -1,0 +1,8 @@
+fastapi
+passlib
+pydantic
+pyJWT
+psycopg2
+uvicorn
+jsonrpcserver
+abc
